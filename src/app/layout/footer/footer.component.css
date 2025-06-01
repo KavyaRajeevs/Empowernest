@@ -1,0 +1,16 @@
+footer {
+    background-color: #672984; /* Bootstrap's bg-light */
+    text-align: center;
+    font-size: 1.125rem; /* text-lg-start */
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+}
+
+div {
+    color: #bfbfc1;
+    padding: 1rem !important;
+    text-align: center !important;
+}

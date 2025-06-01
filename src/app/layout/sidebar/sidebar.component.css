@@ -1,0 +1,134 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #0f0f23;
+    color: #e5e7eb;
+    min-height: 100vh;
+    padding-top: 70px;
+}
+
+/* Navbar styles */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    border-bottom: 1px solid #2d3748;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    padding: 0 2rem;
+}
+
+/* List styles */
+.list-unstyled {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    gap: 2rem;
+}
+
+/* Link styles */
+.list-unstyled a {
+    display: inline-block;
+    text-decoration: none;
+    color: #cbd5e0;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover effects */
+.list-unstyled a:hover {
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Active line indicator */
+.list-unstyled a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.list-unstyled a:hover::after {
+    width: 80%;
+}
+
+/* Special styling for logout */
+.list-unstyled li:last-child a {
+    color: #fca5a5;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.list-unstyled li:last-child a:hover {
+    color: #ffffff;
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.list-unstyled li:last-child a::after {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+/* Focus states for accessibility */
+.list-unstyled a:focus {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    nav {
+        padding: 0 1rem;
+    }
+    
+    .list-unstyled {
+        gap: 1rem;
+        flex-wrap: wrap;
+        height: auto;
+        padding: 1rem 0;
+    }
+    
+    .list-unstyled a {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .list-unstyled {
+        gap: 0.5rem;
+        justify-content: space-between;
+    }
+    
+    .list-unstyled a {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
