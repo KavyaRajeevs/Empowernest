@@ -1,18 +1,18 @@
 <div class="role-container">
   <h1>What describes you the best?</h1>
-    <p>Choose your role to continue</p>
-    <div class="roles">
-        <div class="card" style="width: 18rem;" (click)="onRoleCardClick()" routerLink="/learner">
-            <div class="card-body" >
-                <h5 class="card-title">Learner</h5>
-                <p class="card-text">I want to learn new skills and knowledge.</p> 
-            </div>
-        </div>
-        <div class="card" style="width: 18rem;" (click)="onRoleCardClick()" routerLink="/instructor">
-            <div class="card-body">
-                <h5 class="card-title">Instructor</h5>
-                <p class="card-text">I want to teach others and share my knowledge.</p> 
-            </div>
-        </div>
+  <p>Choose your role to continue</p>
+  <div class="roles">
+    <div class="card" style="width: 18rem;" (click)="selectRole('learner')">
+      <div class="card-body">
+        <h5 class="card-title">Learner</h5>
+        <p class="card-text">I want to learn new skills and knowledge.</p> 
+      </div>
     </div>
+    <div class="card" style="width: 18rem;" (click)="selectRole('instructor')">
+      <div class="card-body">
+        <h5 class="card-title">Instructor</h5>
+        <p class="card-text">I want to teach others and share my knowledge.</p> 
+      </div>
+    </div>
+  </div>
 </div>

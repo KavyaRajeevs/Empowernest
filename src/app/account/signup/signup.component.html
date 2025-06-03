@@ -1,18 +1,52 @@
 <div class="signup">
   <h1>Create an Account</h1>
-  <form>
+  <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
     <div class="mb-3">
       <label for="email" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+      <input 
+        type="email" 
+        class="form-control" 
+        id="email" 
+        aria-describedby="emailHelp" 
+        formControlName="email"
+        [class.is-invalid]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
+      <div class="invalid-feedback" *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
+        Please enter a valid email address.
+      </div>
     </div>
+    
     <div class="mb-3">
       <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password">
+      <input 
+        type="password" 
+        class="form-control" 
+        id="password" 
+        formControlName="password"
+        [class.is-invalid]="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
+      <div class="invalid-feedback" *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
+        Password must be at least 6 characters long.
+      </div>
     </div>
+    
     <div class="mb-3">
       <label for="confirmPassword" class="form-label">Confirm Password</label>
-      <input type="password" class="form-control" id="confirmPassword">
+      <input 
+        type="password" 
+        class="form-control" 
+        id="confirmPassword" 
+        formControlName="confirmPassword"
+        [class.is-invalid]="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched">
+      <div class="invalid-feedback" *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched">
+        Please confirm your password.
+      </div>
     </div>
-    <button type="submit" class="btn btn-primary" routerLink="/role">Sign Up</button>
+    
+    <button type="submit" class="btn btn-primary" [disabled]="!signUpForm.valid">
+      Sign Up
+    </button>
   </form>
+  
+  <p>
+    Already have an account? <a routerLink="/signin">Sign In</a>
+  </p>
 </div>
