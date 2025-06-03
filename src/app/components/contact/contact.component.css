@@ -310,50 +310,7 @@ body {
             line-height: 1.6;
         }
 
-        /* Office Hours */
-        .office-hours {
-            background: linear-gradient(135deg, #2d3748, #4a5568);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-
-        .hours-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .hours-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-        }
-
-        .hours-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            text-align: left;
-        }
-
-        .hours-item {
-            background: rgba(255,255,255,0.1);
-            padding: 1.5rem;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-
-        .hours-item h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: #e2e8f0;
-        }
-
-        .hours-item p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
+        
 
         /* Animations */
         @keyframes fadeInUp {
@@ -396,8 +353,5 @@ body {
                 text-align: center;
             }
 
-            .hours-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
+            
         }
