@@ -35,6 +35,7 @@ nav {
     justify-content: center;
     height: 70px;
     gap: 2rem;
+    cursor: pointer;
 }
 
 /* Link styles */

@@ -30,6 +30,8 @@ export class AccountComponent {
       });
       if(user){
         alert('Login Succesful');
+        localStorage.setItem('role', user.role);
+        localStorage.setItem('currentUserEmail', user.email);
         this.loginForm.reset();
         this.router.navigate([`/${user.role}`]);
         

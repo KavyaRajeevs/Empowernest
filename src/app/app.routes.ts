@@ -12,6 +12,10 @@ import { CoursesComponent } from './learner/courses/courses.component';
 import { JobsApplyComponent } from './learner/jobs-apply/jobs-apply.component';
 import { ViewApplicationsComponent } from './learner/view-applications/view-applications.component';
 import { FinanceComponent } from './learner/finance/finance.component';
+import { InstructorProfileComponent } from './instructor/instructor-profile/instructor-profile.component';
+import { InstructorCoursesComponent } from './instructor/instructor-courses/instructor-courses.component';
+import { InstructorJobsComponent } from './instructor/instructor-jobs/instructor-jobs.component';
+import { InstructorApplicationsComponent } from './instructor/instructor-applications/instructor-applications.component';
 
 
 
@@ -26,8 +30,12 @@ export const routes: Routes = [
     { path: 'instructor', component: InstructoroverviewComponent },
     { path: 'learner-profile', component: LearnerProfileComponent },
     { path: 'learner-courses', component: CoursesComponent },
-    { path: 'jobs-apply', component: JobsApplyComponent },
-    { path: 'view-applications', component: ViewApplicationsComponent },
+    { path: 'learner-jobs', component: JobsApplyComponent },
+    { path: 'learner-applications', component: ViewApplicationsComponent },
+    { path: 'instructor-profile', component: InstructorProfileComponent},
+    { path: 'instructor-courses', component: InstructorCoursesComponent},
+    { path: 'instructor-jobs', component: InstructorJobsComponent},
+    { path: 'instructor-applications', component: InstructorApplicationsComponent},
     { path: 'finance', component: FinanceComponent },
 
     { path: '**', redirectTo: '' }

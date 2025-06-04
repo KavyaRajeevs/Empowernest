@@ -54,7 +54,7 @@ export class RoleComponent {
                   console.log('Role updated successfully:', response);
                   
                   // Store role in localStorage for immediate use
-                  localStorage.setItem('userRole', role);
+                  localStorage.setItem('role', role);
                   
                   // Navigate to the appropriate dashboard
                   this.router.navigate([`/${role}`]);
