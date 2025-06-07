@@ -1,195 +1,187 @@
 <div class="profile-container">
+  <!-- Profile Header -->
   <div class="profile-header">
-    <h1>User Profile</h1>
-    <button class="btn btn-outline-primary edit-btn" (click)="toggleEditMode()">
-      {{ isEditMode ? 'Cancel' : 'Edit Profile' }}
-    </button>
-  </div>
-
-  <div class="profile-content">
-    <!-- Profile Image Section -->
-    <div class="profile-image-section">
-      <div class="image-container">
-        <img 
-          [src]="userProfile.imageUrl"  
-          class="profile-image"
-          (error)="onImageError($event)">
-        
-        <div class="image-overlay" *ngIf="isEditMode" (click)="fileInput.click()">
-          <i class="fas fa-camera"></i>
-          <span>Change Photo</span>
-        </div>
-        
+    <div class="profile-avatar">
+      <img 
+        [src]="userProfile.imageUrl || 'assets/images/default-avatar.png'" 
+        [alt]="userProfile.name || 'User Avatar'"
+        (error)="onImageError($event)"
+        class="avatar-image">
+      <div class="avatar-overlay" *ngIf="isEditMode">
         <input 
-          #fileInput 
           type="file" 
+          id="imageUpload" 
           accept="image/*" 
-          style="display: none"
-          (change)="onImageSelect($event)">
+          (change)="onImageSelect($event)"
+          class="file-input">
+        <label for="imageUpload" class="upload-btn">
+          <i class="upload-icon">📷</i>
+        </label>
       </div>
     </div>
-
-    <!-- Profile Information -->
+    
     <div class="profile-info">
-      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+      <h1 class="profile-name">{{ userProfile.name || 'Anonymous User' }}</h1>
+      <p class="profile-role">{{ userProfile.role | titlecase }}</p>
+      <p class="profile-email">{{ userProfile.email }}</p>
+      
+      <!-- Profile Completeness -->
+      <div class="completion-indicator">
+        <div class="completion-bar">
+          <div class="completion-fill" [style.width.%]="getProfileCompleteness()"></div>
+        </div>
+        <span class="completion-text">{{ getProfileCompleteness() }}% Complete</span>
+      </div>
+    </div>
+    
+    <div class="profile-actions">
+      <button 
+        *ngIf="!isEditMode" 
+        (click)="toggleEditMode()" 
+        class="btn btn-primary">
+        Edit Profile
+      </button>
+      <div *ngIf="isEditMode" class="edit-actions">
+        <button 
+          (click)="saveProfile()" 
+          [disabled]="!profileForm.valid || isSaving"
+          class="btn btn-success">
+          {{ isSaving ? 'Saving...' : 'Save' }}
+        </button>
+        <button 
+          (click)="cancelEdit()" 
+          class="btn btn-secondary">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Content -->
+  <div class="profile-content">
+    <form [formGroup]="profileForm" class="profile-form">
+      
+      <!-- Basic Information Section -->
+      <div class="form-section">
+        <h2 class="section-title">Basic Information</h2>
         
-        <!-- Name Field -->
-        <div class="form-group">
-          <label for="name" class="form-label">Full Name</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="name" 
-            formControlName="name"
-            [readonly]="!isEditMode"
-            [class.form-control-plaintext]="!isEditMode"
-            [class.is-invalid]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
-          <div class="invalid-feedback" *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
-            Name is required and must be at least 2 characters long.
-          </div>
-        </div>
-
-        <!-- Email Field (Read-only) -->
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input 
-            type="email" 
-            class="form-control-plaintext" 
-            id="email" 
-            [value]="userProfile.email"
-            readonly>
-          <small class="form-text text-muted">Email cannot be changed</small>
-        </div>
-
-        <!-- Age Field -->
-        <div class="form-group">
-          <label for="age" class="form-label">Age</label>
-          <input 
-            type="number" 
-            class="form-control" 
-            id="age" 
-            formControlName="age"
-            [readonly]="!isEditMode"
-            [class.form-control-plaintext]="!isEditMode"
-            [class.is-invalid]="profileForm.get('age')?.invalid && profileForm.get('age')?.touched"
-            min="13" 
-            max="120">
-          <div class="invalid-feedback" *ngIf="profileForm.get('age')?.invalid && profileForm.get('age')?.touched">
-            Age must be between 13 and 120.
-          </div>
-        </div>
-
-        <!-- Role Field (Read-only) -->
-        <div class="form-group">
-          <label for="role" class="form-label">Role</label>
-          <input 
-            type="text" 
-            class="form-control-plaintext" 
-            id="role" 
-            [value]="userProfile.role | titlecase"
-            readonly>
-        </div>
-
-        <!-- Skills Field -->
-        <div class="form-group">
-          <label for="skills" class="form-label">Skills</label>
-          <div *ngIf="!isEditMode" class="skills-display">
-            <span 
-              *ngFor="let skill of userProfile.skills" 
-              class="badge bg-primary skill-badge">
-              {{ skill }}
-            </span>
-            <span *ngIf="userProfile.skills.length === 0" class="text-muted">No skills added yet</span>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input 
+              id="name"
+              type="text" 
+              formControlName="name"
+              [readonly]="!isEditMode"
+              class="form-control"
+              [class.error]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
+            <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" class="error-message">
+              <span *ngIf="profileForm.get('name')?.errors?.['required']">Name is required</span>
+              <span *ngIf="profileForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+            </div>
           </div>
           
-          <div *ngIf="isEditMode" class="skills-edit">
-            <div class="input-group mb-2">
-              <input 
-                type="text" 
-                class="form-control" 
-                [(ngModel)]="newSkill"
-                [ngModelOptions]="{standalone: true}"
-                placeholder="Add a skill..."
-                (keyup.enter)="addSkill()">
+          <div class="form-group">
+            <label for="age">Age *</label>
+            <input 
+              id="age"
+              type="number" 
+              formControlName="age"
+              [readonly]="!isEditMode"
+              min="13" 
+              max="120"
+              class="form-control"
+              [class.error]="profileForm.get('age')?.invalid && profileForm.get('age')?.touched">
+            <div *ngIf="profileForm.get('age')?.invalid && profileForm.get('age')?.touched" class="error-message">
+              <span *ngIf="profileForm.get('age')?.errors?.['required']">Age is required</span>
+              <span *ngIf="profileForm.get('age')?.errors?.['min']">Age must be at least 13</span>
+              <span *ngIf="profileForm.get('age')?.errors?.['max']">Age must be less than 120</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            id="email"
+            type="email" 
+            [value]="userProfile.email"
+            readonly
+            class="form-control readonly">
+        </div>
+
+        <div class="form-group">
+          <label for="role">Role</label>
+          <input 
+            id="role"
+            type="text" 
+            [value]="userProfile.role | titlecase"
+            readonly
+            class="form-control readonly">
+        </div>
+      </div>
+
+      <!-- Skills Section -->
+      <div class="form-section">
+        <h2 class="section-title">Skills & Expertise</h2>
+        
+        <div class="skills-container">
+          <div class="skills-list">
+            <div 
+              *ngFor="let skill of userProfile.skills; let i = index" 
+              class="skill-tag">
+              <span class="skill-name">{{ skill }}</span>
               <button 
-                class="btn btn-outline-secondary" 
-                type="button" 
-                (click)="addSkill()"
-                [disabled]="!newSkill.trim()">
-                Add
+                *ngIf="isEditMode"
+                (click)="removeSkill(i)" 
+                type="button"
+                class="remove-skill"
+                title="Remove skill">
+                ×
               </button>
             </div>
             
-            <div class="current-skills">
-              <span 
-                *ngFor="let skill of userProfile.skills; let i = index" 
-                class="badge bg-secondary skill-badge-edit">
-                {{ skill }}
-                <button 
-                  type="button" 
-                  class="btn-close btn-close-white ms-2" 
-                  (click)="removeSkill(i)"
-                  aria-label="Remove skill"></button>
-              </span>
+            <div *ngIf="userProfile.skills.length === 0" class="no-skills">
+              No skills added yet. Add your first skill!
             </div>
           </div>
+          
+          <div *ngIf="isEditMode" class="add-skill-section">
+            <div class="add-skill-input">
+              <input 
+                type="text" 
+                [(ngModel)]="newSkill"
+                [ngModelOptions]="{standalone: true}"
+                (keyup.enter)="addSkill()"
+                placeholder="Enter a skill (e.g., JavaScript, Leadership, etc.)"
+                class="form-control skill-input">
+              <button 
+                type="button"
+                (click)="addSkill()"
+                [disabled]="!newSkill.trim()"
+                class="btn btn-add-skill">
+                Add Skill
+              </button>
+            </div>
+            <small class="skill-hint">Press Enter or click "Add Skill" to add</small>
+          </div>
         </div>
+      </div>
 
-        <!-- Image URL Field (for direct URL input) -->
-        <div class="form-group" *ngIf="isEditMode">
-          <label for="imageUrl" class="form-label">Profile Image URL (Optional)</label>
+      <!-- Image URL Section (for manual URL input) -->
+      <div class="form-section" *ngIf="isEditMode">
+        <h2 class="section-title">Profile Image</h2>
+        <div class="form-group">
+          <label for="imageUrl">Image URL (optional)</label>
           <input 
+            id="imageUrl"
             type="url" 
-            class="form-control" 
-            id="imageUrl" 
             formControlName="imageUrl"
-            placeholder="https://example.com/image.jpg">
-          <small class="form-text text-muted">
-            You can either upload an image above or provide a direct URL here
-          </small>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="form-actions" *ngIf="isEditMode">
-          <button 
-            type="submit" 
-            class="btn btn-primary"
-            [disabled]="!profileForm.valid || isSaving">
-            <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isSaving ? 'Saving...' : 'Save Changes' }}
-          </button>
-          <button 
-            type="button" 
-            class="btn btn-secondary ms-2"
-            (click)="cancelEdit()">
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Profile Stats -->
-  <div class="profile-stats mt-4">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="stat-card">
-          <h3>{{ userProfile.skills.length }}</h3>
-          <p>Skills</p>
+            placeholder="https://example.com/your-image.jpg"
+            class="form-control">
+          <small class="form-hint">You can upload an image above or enter a URL here</small>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="stat-card">
-          <h3>{{ userProfile.role}}</h3>
-          <p>Role</p>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="stat-card">
-          <h3>{{ getProfileCompleteness() }}%</h3>
-          <p>Profile Complete</p>
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 </div>
